@@ -657,7 +657,7 @@ public class VorbisFile {
 
 
     static int fseek(InputStream fis, long off, int whence) {
-        if (fis instanceof final SeekableInputStream) {
+        if (fis instanceof SeekableInputStream) {
             final SeekableInputStream sis = (SeekableInputStream) fis;
             try {
                 if (whence == VorbisFile.SEEK_SET) {
@@ -684,7 +684,7 @@ public class VorbisFile {
 
     static long ftell(InputStream fis) {
         try {
-            if (fis instanceof final SeekableInputStream) {
+            if (fis instanceof SeekableInputStream) {
                 return ((SeekableInputStream) fis).tell();
             }
         } catch (final Exception e) {
