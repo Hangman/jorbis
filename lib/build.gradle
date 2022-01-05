@@ -1,0 +1,76 @@
+buildscript {
+	project.version = '0.0.17'
+	project.group = 'com.jcraft'
+}
+
+plugins {
+    id 'java-library'
+    id 'eclipse'
+    id 'maven-publish'
+    id 'java'
+}
+
+// ECLIPSE SETTINGS
+eclipse.project.name = 'jorbis-core'
+
+// ENCODING SETTINGS
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+repositories {
+    mavenLocal()
+	mavenCentral()
+	google()
+	maven { url 'https://plugins.gradle.org/m2/' }
+	maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+	maven { url 'https://jitpack.io' }
+	gradlePluginPortal()
+}
+
+dependencies {
+
+}
+
+allprojects {
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	compileJava {
+		options.incremental = true
+	}
+	
+	if(JavaVersion.current().isJava9Compatible()) {
+        tasks.withType(JavaCompile) {
+            options.release.set(8)
+        }
+    }
+}
+
+java {
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'de.pottgames'
+            artifactId = project.name
+            version = project.version
+
+            from components.java
+        }
+    }
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                   'Implementation-Version': project.version)
+    }
+}
+
+testing {
+    suites {
+        test {
+            useJUnitJupiter('5.7.2')
+        }
+    }
+}
