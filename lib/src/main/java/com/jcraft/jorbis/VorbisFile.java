@@ -657,7 +657,8 @@ public class VorbisFile {
 
 
     static int fseek(InputStream fis, long off, int whence) {
-        if (fis instanceof final SeekableInputStream sis) {
+        if (fis instanceof final SeekableInputStream) {
+            final SeekableInputStream sis = (SeekableInputStream) fis;
             try {
                 if (whence == VorbisFile.SEEK_SET) {
                     sis.seek(off);
@@ -683,8 +684,8 @@ public class VorbisFile {
 
     static long ftell(InputStream fis) {
         try {
-            if (fis instanceof final SeekableInputStream sis) {
-                return sis.tell();
+            if (fis instanceof final SeekableInputStream) {
+                return ((SeekableInputStream) fis).tell();
             }
         } catch (final Exception e) {
         }
@@ -780,9 +781,8 @@ public class VorbisFile {
         if (this.vi[i].bitrate_upper > 0) {
             if (this.vi[i].bitrate_lower > 0) {
                 return (this.vi[i].bitrate_upper + this.vi[i].bitrate_lower) / 2;
-            } else {
-                return this.vi[i].bitrate_upper;
             }
+            return this.vi[i].bitrate_upper;
         }
         return -1;
     }
